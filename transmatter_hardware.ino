@@ -19,6 +19,8 @@ void loop(){
   if (val == 0) {
     Keyboard.press('x');
     Serial.println("x");
+    delay(100);
+    Keyboard.release('x');
   }
   if (key != oldkey){
     delay(50);  // wait for debounce time
@@ -30,15 +32,34 @@ void loop(){
         digitalWrite(13,HIGH);
         switch(key){
            case 0:
+                  Keyboard.press(KEY_UP_ARROW);
+                  delay(100);
+                  Keyboard.release(KEY_UP_ARROW);
                   Serial.println("arrow up");
                   break;
-           case 1:Serial.println("arrow left");
+           case 1:
+                  Keyboard.press(KEY_LEFT_ARROW);
+                  delay(100);
+                  Keyboard.release(KEY_LEFT_ARROW);
+                  Serial.println("arrow left");
                   break;
-           case 2:Serial.println("arrow down");
+           case 2:
+                  Keyboard.press(KEY_DOWN_ARROW);
+                  delay(100);
+                  Keyboard.release(KEY_DOWN_ARROW);
+                  Serial.println("arrow down");
                   break;
-           case 3:Serial.println("arrow right");
+           case 3:
+                  Keyboard.press(KEY_RIGHT_ARROW);
+                  delay(100);
+                  Keyboard.release(KEY_RIGHT_ARROW);
+                  Serial.println("arrow right");
                   break;
-           case 4:Serial.println("spacebar");
+           case 4:
+                  Keyboard.press(' ');
+                  delay(100);
+                  Keyboard.release(' ');
+                  Serial.println("spacebar");
                   break;
         }
       }
