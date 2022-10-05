@@ -1,8 +1,5 @@
 # Hardware
 
-- don't have the final design yet.
-- might use UNO with external firmware
-- might use Lenoard
-- might use BLE keyboard
-
-but now I will stick with UNO or Lenoard
+- Arduino Leonardo
+- Module switch 4 button in 3v
+- Module switch 5 button in 5v
