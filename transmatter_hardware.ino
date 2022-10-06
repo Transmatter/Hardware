@@ -4,9 +4,13 @@ int NUM_KEYS = 5;
 int adc_key_in;
 int key=-1;
 int oldkey=-1;
-int sw = 2;
+int s1 = 2;
+int s2 = 3;
+int s3 = 4;
+int s4 = 5;
+
 void setup(){
-  pinMode(13, OUTPUT);
+  pinMode(13, OUTPUT);  
   Serial.begin(9600);
   Keyboard.begin();
 }
@@ -15,12 +19,34 @@ void loop(){
   adc_key_in = analogRead(0);    // read the value from the sensor
   digitalWrite(13,LOW);
   key = get_key(adc_key_in);  // convert into key press
-  int val = digitalRead(sw);
-  if (val == 0) {
+  int v1 = digitalRead(s1);
+  int v2 = digitalRead(s2);
+  int v3 = digitalRead(s3);
+  int v4 = digitalRead(s4);
+  
+  if (v1 == 0) {
+    Keyboard.press('z');
+    Serial.println("z");
+    delay(100);
+    Keyboard.release('z');
+  }
+    if (v2 == 0) {
     Keyboard.press('x');
     Serial.println("x");
     delay(100);
     Keyboard.release('x');
+  }
+    if (v3 == 0) {
+    Keyboard.press('c');
+    Serial.println("c");
+    delay(100);
+    Keyboard.release('c');
+  }
+    if (v4 == 0) {
+    Keyboard.press('m');
+    Serial.println("m");
+    delay(100);
+    Keyboard.release('m');
   }
   if (key != oldkey){
     delay(50);  // wait for debounce time
