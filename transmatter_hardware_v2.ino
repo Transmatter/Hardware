@@ -5,6 +5,7 @@ int adc_key_in;
 int key = -1;
 int oldkey = -1;
 bool hold_m = false;
+bool status_mode = false;
 
 void setup (){
    Serial.begin (9600); // 9600 bps
@@ -12,14 +13,14 @@ void setup (){
 }
 
 void loop (){
-   adc_key_in = analogRead (0); // read the value from the sensor
+   adc_key_in = analogRead (0);
    digitalWrite (13, LOW);
-   key = get_key (adc_key_in); // convert into key press
+   key = get_key (adc_key_in);
  
-   if (key != oldkey) { // if keypress is detected
-      delay (50); // wait for debounce time
-      adc_key_in = analogRead (0); // read the value from the sensor
-      key = get_key (adc_key_in); // convert into key press
+   if (key != oldkey) {
+      delay (50);
+      adc_key_in = analogRead (0);
+      key = get_key (adc_key_in);
       if (key != oldkey) {
          oldkey = key;
          if (key >= 0) {
@@ -27,7 +28,7 @@ void loop (){
             switch (key) {
                case 0: browsing_content(); //s1
                break;
-               case 1: home_page();//s2
+               case 1:home_page();//s2
                break;
                case 2: load_more(); //s3
                break;
@@ -42,10 +43,19 @@ void loop (){
    delay (100);
 }
 void home_page() {
-  Serial.println ("S2 OK");
-  Keyboard.press(KEY_UP_ARROW);
-  delay(100);
-  Keyboard.release(KEY_UP_ARROW);
+  Serial.println("S2 OK");
+  status_mode = !status_mode;
+  if(status_mode) {
+    Serial.println("v is pressed");
+    Keyboard.press('v');
+    delay(100);
+    Keyboard.release('v');
+  } else {
+    Serial.println("Arrow Up is pressed");
+    Keyboard.press(KEY_UP_ARROW);
+    delay(100);
+    Keyboard.release(KEY_UP_ARROW);  
+  }
 }
 
 void load_more() {
@@ -69,15 +79,19 @@ void searching_content() {
       Keyboard.press('m');
   } else {
       Serial.println ("release m");
-      Keyboard.release('m');  
+      Keyboard.release('m');
+      delay(1500);
+      Keyboard.press(KEY_RETURN);
+      delay(100);
+      Keyboard.release(KEY_RETURN);
   }
 }
 
 void confirm() {
   Serial.println ("S5 OK");
-  Keyboard.press(KEY_RETURN);
+  Keyboard.press('/');
   delay(100);
-  Keyboard.release(KEY_RETURN);
+  Keyboard.release('/');
 }
 
 // Convert ADC value to key number
