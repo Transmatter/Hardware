@@ -6,6 +6,9 @@ int key = -1;
 int oldkey = -1;
 bool hold_m = false;
 bool status_mode = false;
+int delta = 500;
+int click1 = 0;
+int click2 =0;
 
 void setup (){
    Serial.begin (9600); // 9600 bps
@@ -28,7 +31,7 @@ void loop (){
             switch (key) {
                case 0: browsing_content(); //s1
                break;
-               case 1:home_page();//s2
+               case 1: home_page(isDoubleClick());//s2
                break;
                case 2: load_more(); //s3
                break;
@@ -42,16 +45,14 @@ void loop (){
    }
    delay (100);
 }
-void home_page() {
-  Serial.println("S2 OK");
-  status_mode = !status_mode;
-  if(status_mode) {
-    Serial.println("v is pressed");
+void home_page(bool isDoubleClick) {
+  if(!isDoubleClick) {
+    Serial.println("pressed v");
     Keyboard.press('v');
     delay(100);
     Keyboard.release('v');
   } else {
-    Serial.println("Arrow Up is pressed");
+    Serial.println("pressed Arrow Up");
     Keyboard.press(KEY_UP_ARROW);
     delay(100);
     Keyboard.release(KEY_UP_ARROW);  
@@ -59,14 +60,14 @@ void home_page() {
 }
 
 void load_more() {
-  Serial.println ("S3 OK");
+  Serial.println ("pressed Arrow Down");
   Keyboard.press(KEY_DOWN_ARROW);
   delay(100);
   Keyboard.release(KEY_DOWN_ARROW);
 }
 
 void browsing_content() {
-  Serial.println ("S1 OK");
+  Serial.println ("pressed x");
   Keyboard.press('x');
   delay(100);
   Keyboard.release('x');
@@ -75,10 +76,10 @@ void browsing_content() {
 void searching_content() {
   hold_m = !hold_m;
   if(hold_m){
-      Serial.println ("press m");
+      Serial.println ("pressed m");
       Keyboard.press('m');
   } else {
-      Serial.println ("release m");
+      Serial.println ("released m");
       Keyboard.release('m');
       delay(1500);
       Keyboard.press(KEY_RETURN);
@@ -88,7 +89,7 @@ void searching_content() {
 }
 
 void confirm() {
-  Serial.println ("S5 OK");
+  Serial.println ("pressed /");
   Keyboard.press('/');
   delay(100);
   Keyboard.release('/');
@@ -104,4 +105,18 @@ int get_key(unsigned int input){
    }
    if (k >= NUM_KEYS)k = -1;  // No valid key pressed
    return k;
+}
+
+bool isDoubleClick () {
+  status_mode = !status_mode;
+  if(status_mode) {
+      click1 = millis();
+  } else {
+    click2 = millis();
+  }
+  int result = abs(click2-click1);
+  if(result <= delta) {
+    return true;
+  }
+  return false;
 }
