@@ -6,7 +6,7 @@ int key = -1;
 int oldkey = -1;
 bool hold_m = false;
 bool status_mode = false;
-int delta = 500;
+int delta = 750;
 int click1 = 0;
 int click2 =0;
 
